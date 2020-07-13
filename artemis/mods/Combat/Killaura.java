@@ -394,32 +394,7 @@ public void render(float red, float green, float blue, double x, double y, doubl
 	      return new float[] { yaw, pitch };
 	  }
 	
-    /**
-     * Start blocking
-     */
-    private void startBlocking(Entity interactEntity, boolean interact) {
-        if (interact) {
-            mc.getNetHandler().addToSendQueue(new C02PacketUseEntity(interactEntity, interactEntity.getPositionVector()));
-            mc.getNetHandler().addToSendQueue(new C02PacketUseEntity(interactEntity, C02PacketUseEntity.Action.INTERACT));
-        }
 
-        mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getCurrentItem()));
-        blockingStatus = true;
-    }
-
-
-    /**
-     * Stop blocking
-     * 
-     * Credit to Liquidbounce
-     */
-    private void stopBlocking() {
-       
-		if (blockingStatus) {
-            mc.getNetHandler().addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-            blockingStatus = false;
-        }
-    }
     
 	//}
 	
