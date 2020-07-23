@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import artemis.Category;
 import artemis.Artemis;
@@ -20,11 +21,13 @@ import artemis.events.EventKey;
 import artemis.events.EventTarget;
 import artemis.util.EntityUtils;
 import artemis.util.PingUtils;
+import artemis.util.RenderUtil1;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 
 
 
@@ -34,7 +37,7 @@ public class HUD extends GuiScreen{
 	int var1;
 	
 	 
-        
+	
         
 	
 	
@@ -71,18 +74,31 @@ public class HUD extends GuiScreen{
     fr.drawString(Artemis.Name + " v" + Artemis.version, 4, 4, 0xffe066);
     
     //arrylist
+    
+   // GlStateManager.translate(5, 5, 0);
+	 //GlStateManager.scale(1, 1, 1);
+
     int count = 0;
     final int[] counter = {1};
     for(module m : Artemis.getModules()) {
-    	if(m.isToggled()) {
+    	if(m.isToggled() && m.visible) {
+    		//System.out.println(fr.getStringWidth(m.getName()) + 400);
     	//this.drawVerticalLine(sr.getScaledWidth(), startY, endY, rainbow(counter[0] * 300));
+    		GL11.glPushMatrix();
+    		GL11.glScalef(0.8f,0.8f, 0.8f);	
+    		
+    		if(m.size != fr.getStringWidth(m.getName()))
+    			m.size++;
+    		
+    		
+    	Gui.drawRect((sr.getScaledHeight() - fr.getStringWidth(m.getName()) + fr.getStringWidth(m.getName()) + 395)- m.size, count*(fr.FONT_HEIGHT + 6), (sr.getScaledHeight() - fr.getStringWidth(m.getName()) + fr.getStringWidth(m.getName()) + 397)- m.size, 6 + fr.FONT_HEIGHT + count*(fr.FONT_HEIGHT + 6), rainbow(counter[0] * 300));	
+    
+    	Gui.drawRect((sr.getScaledHeight() - fr.getStringWidth(m.getName()) + fr.getStringWidth(m.getName()) + 397)- m.size, count*(fr.FONT_HEIGHT + 6), sr.getScaledWidth() + 500, 6 + fr.FONT_HEIGHT + count*(fr.FONT_HEIGHT + 6), 0x90000000);
     	
-    		
-    		
-    	Gui.drawRect(sr.getScaledHeight() - fr.getStringWidth(m.getName()) + 253, count*(fr.FONT_HEIGHT + 6), sr.getScaledHeight() - fr.getStringWidth(m.getName()) + 255, 6 + fr.FONT_HEIGHT + count*(fr.FONT_HEIGHT + 6), rainbow(counter[0] * 300));	
-    	Gui.drawRect(sr.getScaledHeight() - fr.getStringWidth(m.getName()) + 255, count*(fr.FONT_HEIGHT + 6), sr.getScaledWidth(), 6 + fr.FONT_HEIGHT + count*(fr.FONT_HEIGHT + 6), 0x90000000);
-    	Gui.drawRect(532, count*(fr.FONT_HEIGHT + 6), 700, 6 + fr.FONT_HEIGHT + count*(fr.FONT_HEIGHT + 6), rainbow(counter[0] * 300));	
-    	fr.drawString(m.getName(), sr.getScaledHeight() - fr.getStringWidth(m.getName()) + 260, 3 + (count * 15) , rainbow(counter[0] * 300));
+   // 	Gui.drawRect(532, count*(fr.FONT_HEIGHT + 6), 700, 6 + fr.FONT_HEIGHT + count*(fr.FONT_HEIGHT + 6), rainbow(counter[0] * 300));	
+    
+    	fr.drawString(m.getName(), sr.getScaledHeight() - fr.getStringWidth(m.getName()) + fr.getStringWidth(m.getName()) + 400 - m.size, 3 + (count * 15) , rainbow(counter[0] * 300));
+    	GL11.glPopMatrix();
     	count++;
     	counter[0]++;
       }
@@ -103,3 +119,4 @@ public class HUD extends GuiScreen{
       return Color.getHSBColor((float) (rainbowState / 360.0f), 0.8f, 0.7f).getRGB();
 }
 }
+
