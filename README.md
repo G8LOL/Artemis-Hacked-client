@@ -1,4 +1,4 @@
-# Artemis-Hacked-client
+# Artemis-Hacked-client (BIG SKID ONLY MADE OPEN SRC AGAIN FOR SOMEONE)
 Artemis is an open source hacked client for Minecraft 1.8
 
 Note: This is an old version of Artemis, dm on discord for new version/updates
